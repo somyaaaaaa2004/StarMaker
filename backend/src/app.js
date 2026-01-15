@@ -3,6 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/authRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
+import adminAuthRoutes from './routes/adminAuthRoutes.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 const app = express();
@@ -48,8 +50,10 @@ app.get('/api/health', (req, res) => {
 });
 
 // API routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth', authRoutes); // Student authentication routes (DO NOT modify)
 app.use('/api/contact', contactRoutes);
+app.use('/api/admin', adminAuthRoutes); // Admin authentication routes (JWT-based) - register before other admin routes
+app.use('/api/admin', adminRoutes); // Admin routes (separate from student auth)
 
 // 404 handler
 app.use(notFoundHandler);

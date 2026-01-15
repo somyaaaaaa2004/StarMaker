@@ -97,4 +97,13 @@ export const submitContact = async (fullName, email, phone, subject, message) =>
   return response.data;
 };
 
+// Admin API function
+export const adminLogin = async (email, password) => {
+  const response = await api.post('/admin/login', {
+    email,
+    password,
+  });
+  return response.data;
+};
+
 export default api;
