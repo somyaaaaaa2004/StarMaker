@@ -2,6 +2,8 @@
 
 A complete full-stack application with React frontend and Node.js/Express backend with MySQL database.
 
+<img width="1891" height="866" alt="Screenshot 2026-01-15 104838" src="https://github.com/user-attachments/assets/ae640346-e4c1-4a45-863a-2edaaa90f1c3" />
+
 ## Project Structure
 
 ```
