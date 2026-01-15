@@ -1,7 +1,10 @@
 // API service for making HTTP requests
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001/api';
+// VITE_API_URL should be base URL (e.g., https://starmaker-production.up.railway.app)
+// We append /api to create the full API base URL
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5001';
+const API_URL = `${BASE_URL}/api`;
 
 // Create axios instance
 const api = axios.create({

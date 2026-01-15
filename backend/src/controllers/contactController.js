@@ -35,7 +35,7 @@ export async function submitContact(req, res, next) {
     // Return success response
     res.json({
       success: true,
-      message: 'Message received. We will get back to you soon!',
+      message: 'Message received ✅',
     });
   } catch (error) {
     console.error('Contact form error:', error);
