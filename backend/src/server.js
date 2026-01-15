@@ -9,7 +9,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load .env file from backend root directory (two levels up from src/server.js)
-dotenv.config({ path: path.resolve(__dirname, '../../.env') });
+// In Railway/production, env vars are set directly, so this is optional
+const envPath = path.resolve(__dirname, '../../.env');
+try {
+  dotenv.config({ path: envPath });
+} catch (error) {
+  // Ignore if .env file doesn't exist (Railway uses environment variables directly)
+  console.log('ℹ️  .env file not found, using environment variables directly');
+}
 
 // Now import other modules (they can use process.env)
 import app from './app.js';

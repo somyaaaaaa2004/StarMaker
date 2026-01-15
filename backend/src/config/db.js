@@ -29,6 +29,9 @@ async function testConnection() {
 }
 
 // Initialize database connection on startup
-testConnection();
+// Don't block startup if DB is not available (Railway may set DB later)
+testConnection().catch((error) => {
+  console.warn('⚠️  Database connection test failed (will retry on first request):', error.message);
+});
 
 export default pool;

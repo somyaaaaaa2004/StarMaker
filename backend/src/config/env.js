@@ -16,13 +16,21 @@ const requiredEnvVars = [
 ];
 
 // Check for missing environment variables
+// Don't exit during build - Railway sets env vars at runtime
 const missingVars = requiredEnvVars.filter(varName => !process.env[varName]);
 
 if (missingVars.length > 0) {
-  console.error('❌ Missing required environment variables:');
-  missingVars.forEach(varName => console.error(`   - ${varName}`));
-  console.error('\nPlease create a .env file based on env.example');
-  process.exit(1);
+  // Only warn, don't exit - Railway sets env vars at runtime, not during build
+  if (process.env.NODE_ENV === 'production' || process.env.RAILWAY_ENVIRONMENT) {
+    console.warn('⚠️  Missing environment variables (will be validated at runtime):');
+    missingVars.forEach(varName => console.warn(`   - ${varName}`));
+  } else {
+    // In development, still show error but don't exit during module load
+    console.warn('⚠️  Missing environment variables:');
+    missingVars.forEach(varName => console.warn(`   - ${varName}`));
+    console.warn('Please set these in Railway environment variables or .env file');
+  }
+  // Don't exit - let the app start and fail gracefully on first request if needed
 }
 
 // Export configuration
