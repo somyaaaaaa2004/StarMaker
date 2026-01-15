@@ -82,4 +82,16 @@ export const authAPI = {
   },
 };
 
+// Contact API function
+export const submitContact = async (fullName, email, phone, subject, message) => {
+  const response = await api.post('/contact', {
+    fullName,
+    email,
+    phone,
+    subject,
+    message,
+  });
+  return response.data;
+};
+
 export default api;

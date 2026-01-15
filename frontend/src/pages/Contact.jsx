@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { submitContact } from '../services/api';
 import './Contact.css';
 
 function Contact() {
   const [formData, setFormData] = useState({
-    name: '',
+    fullName: '',
     email: '',
     phone: '',
     subject: '',
@@ -26,21 +27,43 @@ function Contact() {
     setLoading(true);
     setStatus({ type: '', message: '' });
 
-    // Simulate form submission (replace with actual API call)
-    setTimeout(() => {
-      setLoading(false);
+    try {
+      const response = await submitContact(
+        formData.fullName,
+        formData.email,
+        formData.phone,
+        formData.subject,
+        formData.message
+      );
+
+      if (response.success) {
+        setStatus({
+          type: 'success',
+          message: response.message || 'Thank you for contacting us! We will get back to you soon. ✨',
+        });
+        // Reset form
+        setFormData({
+          fullName: '',
+          email: '',
+          phone: '',
+          subject: '',
+          message: '',
+        });
+      } else {
+        setStatus({
+          type: 'error',
+          message: response.message || 'Failed to send message. Please try again.',
+        });
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
       setStatus({
-        type: 'success',
-        message: 'Thank you for contacting us! We will get back to you soon. ✨',
+        type: 'error',
+        message: error.response?.data?.message || error.message || 'Failed to send message. Please try again.',
       });
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        subject: '',
-        message: '',
-      });
-    }, 1500);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const contactInfo = [
@@ -82,14 +105,14 @@ function Contact() {
 
                 <div className="form-row">
                   <div className="form-group">
-                    <label htmlFor="name">
+                    <label htmlFor="fullName">
                       <span>👤</span> Full Name
                     </label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
+                      id="fullName"
+                      name="fullName"
+                      value={formData.fullName}
                       onChange={handleChange}
                       placeholder="Enter your full name"
                       required
