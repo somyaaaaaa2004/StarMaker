@@ -16,7 +16,8 @@ import app from './app.js';
 import config from './config/env.js';
 import pool from './config/db.js';
 
-const PORT = config.server.port;
+// Railway requires process.env.PORT, with fallback to config or 3000
+const PORT = process.env.PORT || config.server.port || 3000;
 
 // Verify email configuration during startup
 if (process.env.EMAIL_USER) {
@@ -28,12 +29,14 @@ if (process.env.EMAIL_USER) {
 }
 
 // Start server
-const server = app.listen(PORT, () => {
+// Railway requires binding to 0.0.0.0 to accept external connections
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log('\n🌟 ============================================');
   console.log('   Star Maker Coaching Institute Backend');
   console.log('============================================');
-  console.log(`✅ Server running on http://localhost:${PORT}`);
-  console.log(`📡 Environment: ${config.server.nodeEnv}`);
+  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`📡 Environment: ${config.server.nodeEnv || process.env.NODE_ENV || 'production'}`);
+  console.log(`🌐 Listening on: 0.0.0.0:${PORT}`);
   console.log('============================================\n');
 });
 

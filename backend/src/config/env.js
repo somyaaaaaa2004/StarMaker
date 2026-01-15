@@ -5,13 +5,14 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 // Validate required environment variables
+// Note: PORT is optional - Railway/cloud platforms set it automatically
 const requiredEnvVars = [
   'DB_HOST',
   'DB_USER',
   'DB_PASSWORD',
   'DB_NAME',
   'JWT_SECRET',
-  'PORT'
+  // PORT is not required - will use process.env.PORT or fallback to 3000
 ];
 
 // Check for missing environment variables
